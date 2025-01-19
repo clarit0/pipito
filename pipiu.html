@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Especial para Lais</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #ff6b6b;
+        }
+        .quiz-container {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .options button {
+            display: block;
+            margin: 5px 0;
+            padding: 10px;
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .options button:hover {
+            background-color: #ff5252;
+        }
+        .result, .final-message {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quiz Especial para pipito</h1>
+    <div class="quiz-container">
+        <div id="quiz">
+            <div class="question" id="question"></div>
+            <div class="options">
+                <button onclick="checkAnswer(1)"></button>
+                <button onclick="checkAnswer(2)"></button>
+                <button onclick="checkAnswer(3)"></button>
+            </div>
+        </div>
+        <div class="result" id="result"></div>
+        <div class="final-message" id="finalMessage"></div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "QUEM É O AMOR DA VIDA DE CLARA?",
+                options: ["LAIS VITÓRIA", "LAIS VITÓRIA", "LAIS VITÓRIA"],
+                correct: [1, 2, 3] // Todas estão corretas
+            },
+            {
+                question: "QUEM FAZ CLARA FELIZ?",
+                options: ["LAIS", "LAIS E ROBLOX", "ROBLOX"],
+                correct: [2] // Apenas a opção B
+            },
+            {
+                question: "QUEM É A MULHER MAIS LINDA E CHEIROSA DO MUNDO INTEIRO?",
+                options: ["LAIS", "VITÓRIA", "A MINHA MULHER"],
+                correct: [3], // Apenas a opção C
+                explanation: "Existem várias Lais e Vitórias, mas a mais cheirosa do mundo é a minha mulher, que é você!"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const questionElement = document.getElementById("question");
+            const buttons = document.querySelectorAll(".options button");
+
+            const current = questions[currentQuestion];
+            questionElement.textContent = current.question;
+
+            buttons.forEach((button, index) => {
+                button.textContent = current.options[index];
+            });
+        }
+
+        function checkAnswer(selected) {
+            const current = questions[currentQuestion];
+            const resultElement = document.getElementById("result");
+
+            if (current.correct.includes(selected)) {
+                score++;
+                resultElement.textContent = "Acertou! 😊";
+            } else {
+                if (current.explanation) {
+                    resultElement.textContent = `Errou! 😢 ${current.explanation}`;
+                } else {
+                    resultElement.textContent = "Errou! 😢";
+                }
+            }
+
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                setTimeout(() => {
+                    resultElement.textContent = "";
+                    loadQuestion();
+                }, 5000);
+            } else {
+                setTimeout(() => {
+                    showFinalMessage();
+                }, 5000);
+            }
+        }
+
+        function showFinalMessage() {
+            const quiz = document.getElementById("quiz");
+            const finalMessage = document.getElementById("finalMessage");
+
+            quiz.style.display = "none";
+            finalMessage.innerHTML = `
+                <h2>Quiz Finalizado!</h2>
+                <p>Você acertou ${score} de ${questions.length} perguntas!</p>
+                <p>Espero que tenha gostado do quiz, amor. Te amo! ❤️</p>
+            `;
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
